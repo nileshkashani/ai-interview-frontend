@@ -61,12 +61,12 @@ const AnalyseResume = () => {
     )
   }
   return (
-    <div className="h-full p-6">
-      <div className="grid grid-cols-2 gap-6 h-full">
+    <div className="h-full w-full p-4 sm:p-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full">
 
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6 min-h-0">
 
-          <div className="bg-white border rounded-2xl p-6 shadow-sm space-y-4">
+          <div className="bg-white border rounded-2xl p-4 sm:p-6 shadow-sm space-y-4">
             <h2 className="text-lg font-semibold">Upload Resume</h2>
 
             <div className="border-2 border-dashed rounded-xl p-6 text-center">
@@ -77,7 +77,10 @@ const AnalyseResume = () => {
                 className="hidden"
                 id="resumeUpload"
               />
-              <label htmlFor="resumeUpload" className="cursor-pointer text-sm text-zinc-600">
+              <label
+                htmlFor="resumeUpload"
+                className="cursor-pointer text-sm text-zinc-600 break-all"
+              >
                 {file ? file.name : 'Click to upload resume'}
               </label>
             </div>
@@ -86,35 +89,33 @@ const AnalyseResume = () => {
               onClick={handleUpload}
               disabled={!file || loading}
               className={`w-full bg-red-500 text-white py-2 rounded-xl transition disabled:opacity-50
-  ${(file && !loading) ? 'hover:text-black' : 'hover:bg-zinc-800'}
-`}
-
+              ${(file && !loading) ? 'hover:text-black' : 'hover:bg-zinc-800'}
+            `}
             >
               {loading ? 'Analysing...' : 'Upload & Analyse'}
             </button>
           </div>
 
           {resume && (
-            <div className="bg-white border rounded-2xl p-4 shadow-sm flex-1">
+            <div className="bg-white border rounded-2xl p-4 shadow-sm flex-1 min-h-[300px]">
               <h3 className="font-medium mb-3">Resume Preview</h3>
 
               <iframe
                 src={resume.fileUrl}
                 title="Resume Preview"
-                className="w-full h-full rounded-lg border"
+                className="w-full h-[300px] sm:h-full rounded-lg border"
               />
             </div>
           )}
         </div>
 
         {resume && (
-          <div className="bg-white border rounded-2xl p-6 shadow-sm overflow-y-auto">
+          <div className="bg-white border rounded-2xl p-4 sm:p-6 shadow-sm overflow-y-auto max-h-[calc(100vh-6rem)]">
             <h2 className="text-lg font-semibold mb-2">AI Feedback</h2>
 
             <div className="flex justify-center mb-6">
-              <ScoreCircle score={resume.score} size={160} />
+              <ScoreCircle score={resume.score} size={140} />
             </div>
-
 
             <div className="prose max-w-none text-sm whitespace-pre-wrap mb-6">
               {resume.feedback}
@@ -132,6 +133,7 @@ const AnalyseResume = () => {
       </div>
     </div>
   )
+
 }
 
 export default AnalyseResume

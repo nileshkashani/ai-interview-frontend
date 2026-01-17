@@ -1,14 +1,13 @@
 import { Link, useNavigate } from "react-router-dom"
 import { Button } from "./ui/button"
-import { Zap, ArrowRight, CheckCircle, MessageSquareText, HelpCircle, Video } from "lucide-react"
+import { Zap, ArrowRight, CheckCircle, HelpCircle, Video } from "lucide-react"
 import { FaRobot } from "react-icons/fa6"
+import { MdDocumentScanner } from "react-icons/md";
 
 const features = [
-  { icon: MessageSquareText, title: "AI Q&A Generator", description: "Generate custom interview questions with AI-powered answers" },
+  { icon: FaRobot, title: "AI Interview Agent", description: "Give mock interview to AI" },
   { icon: HelpCircle, title: "Interactive Quizzes", description: "Test your knowledge with adaptive quizzes" },
-  { icon: Video, title: "Video Rooms", description: "Conduct mock interviews with video conferencing" },
-  { icon: MessageSquareText, title: "Daily Summary", description: "Get curated daily tech news summaries" },
-  { icon: FaRobot, title: "AI Assistant", description: "Interact with your personal AI interview coach" }
+  { icon: MdDocumentScanner, title: "Resume ATS", description: "Analye your resume with AI" },
 ]
 
 export default function Starter() {
@@ -27,7 +26,7 @@ export default function Starter() {
 
           <div className="flex items-center gap-4">
             <Link to="/login">
-              <Button variant="ghost">Sign in</Button>
+              <Button variant="ghost" className={'cursor-pointer'}>Sign in</Button>
             </Link>
             <Link to="/signup">
               <Button className={'cursor-pointer'}>Get Started</Button>
@@ -96,7 +95,7 @@ export default function Starter() {
         <div className="container mx-auto max-w-3xl">
           <h2 className="text-3xl font-bold mb-4">Ready to start preparing?</h2>
           <p className="text-muted-foreground mb-8">
-            Join thousands of developers who improved their interview skills
+            Join your competetors who are improving their interview skills
           </p>
 
           <Link to="/signup">
@@ -106,16 +105,6 @@ export default function Starter() {
             </Button>
           </Link>
 
-          <div className="flex justify-center gap-6 mt-8 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <CheckCircle className="h-4 w-4 text-green-500" />
-              No credit card required
-            </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle className="h-4 w-4 text-green-500" />
-              Free tier available
-            </div>
-          </div>
         </div>
       </section>
 
@@ -126,7 +115,7 @@ export default function Starter() {
           </div>
           <span className="font-bold">Interview.io</span>
         </div>
-        <p className="text-sm text-muted-foreground">© 2024 Interview.io</p>
+        <p className="text-sm text-muted-foreground">© 2026 Interview.io</p>
       </footer>
     </div>
   )

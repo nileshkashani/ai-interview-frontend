@@ -22,14 +22,14 @@ const Quiz = () => {
 
         const loadQuestions = async () => {
             const resp = await axios.get(`${API}/quiz/questions/getAll/${quizId}`)
-            .then((res) => {
-                setQuestions(res.data.data)
-                console.log(res.data.data)
-                if(res.data?.data?.length === 0){
-                    setQuestions("Something went wrong from google gemini's side....please create quiz again"); 
-                    setIsError(true)
-                }
-            })
+                .then((res) => {
+                    setQuestions(res.data.data)
+                    console.log(res.data.data)
+                    if (res.data?.data?.length === 0) {
+                        setQuestions("Something went wrong from google gemini's side....please create quiz again");
+                        setIsError(true)
+                    }
+                })
         }
 
         loadQuestions()
@@ -39,7 +39,7 @@ const Quiz = () => {
         setAnswers(prev => ({ ...prev, [qIndex]: option }))
     }
 
-    if(error){
+    if (error) {
         return (
             <div className='flex h-screen flex-col justify-center items-center '>
                 <div className=' rounded-md p-2'>{questions}</div>
@@ -69,16 +69,18 @@ const Quiz = () => {
 
 
     return (
-        <div className="relative w-full h-screen bg-zinc-50">
-            <div className="flex w-full h-full p-6 gap-6 pr-[380px]">
+        <div className="relative w-full h-screen bg-zinc-50 overflow-hidden">
+            <div className="flex flex-col lg:flex-row w-full h-full p-3 sm:p-6 gap-4 lg:gap-6">
 
-
-                <div className="flex-1 bg-white rounded-xl shadow-sm p-8 space-y-8 overflow-y-auto">
-                    <h1 className="text-2xl font-bold text-red-500">AI Generated Quiz</h1>
+                <div className="flex-1 bg-white rounded-xl shadow-sm p-4 sm:p-6 lg:p-8
+        space-y-6 overflow-y-auto">
+                    <h1 className="text-2xl font-bold text-red-500">
+                        AI Generated Quiz
+                    </h1>
 
                     {questions.map((q, qIndex) => (
-                        <div key={q._id} className="border rounded-xl p-5 space-y-4">
-                            <p className="font-medium text-zinc-800">
+                        <div key={q._id} className="border rounded-xl p-4 sm:p-5 space-y-4">
+                            <p className="font-medium text-zinc-800 text-sm sm:text-base">
                                 {qIndex + 1}. {q.text.replace("```c", "").replace("```", "")}
                             </p>
 
@@ -86,17 +88,22 @@ const Quiz = () => {
                                 {q.options.map((option, oIndex) => (
                                     <label
                                         key={oIndex}
-                                        className={`flex items-center gap-3 p-3 border rounded-lg cursor-pointer transition
-                  ${answers[qIndex] === option ? "border-red-500 bg-red-50" : "hover:bg-zinc-50"}`}
+                                        className={`flex items-start gap-3 p-3 border rounded-lg cursor-pointer transition
+                    ${answers[qIndex] === option
+                                                ? "border-red-500 bg-red-50"
+                                                : "hover:bg-zinc-50"
+                                            }`}
                                     >
                                         <input
                                             type="radio"
                                             name={`q-${qIndex}`}
                                             checked={answers[qIndex] === option}
                                             onChange={() => handleChange(qIndex, option)}
-                                            className="accent-red-500"
+                                            className="accent-red-500 mt-1"
                                         />
-                                        <span className="text-sm text-zinc-700">{option}</span>
+                                        <span className="text-sm text-zinc-700 break-words">
+                                            {option}
+                                        </span>
                                     </label>
                                 ))}
                             </div>
@@ -105,13 +112,42 @@ const Quiz = () => {
 
                     <button
                         onClick={handleSubmit}
-                        className="w-full py-3 rounded-xl bg-red-500 text-white font-semibold hover:bg-red-600 transition"
+                        className="w-full py-3 rounded-xl bg-red-500 text-white
+            font-semibold hover:bg-red-600 transition"
                     >
                         Submit Quiz
                     </button>
                 </div>
-                <div className="hidden lg:block fixed top-6 right-6 w-[340px] bg-white rounded-xl shadow-sm p-6 space-y-4">
-                    <h2 className="font-semibold text-lg text-zinc-800">Progress</h2>
+
+                <div
+                    className="lg:hidden sticky bottom-0 bg-white border-t
+          shadow-inner p-4 space-y-3"
+                >
+                    <p className="text-sm text-zinc-600 font-medium">
+                        Answered {Object.keys(answers).length} / {questions.length}
+                    </p>
+
+                    <div className="grid grid-cols-6 gap-2">
+                        {questions.map((_, i) => (
+                            <div
+                                key={i}
+                                className={`h-9 rounded-lg flex items-center justify-center text-xs font-semibold
+                ${answers[i]
+                                        ? "bg-red-500 text-white"
+                                        : "bg-zinc-100 text-zinc-400"
+                                    }`}
+                            >
+                                {i + 1}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="hidden lg:block fixed top-6 right-6 w-[340px]
+        bg-white rounded-xl shadow-sm p-6 space-y-4">
+                    <h2 className="font-semibold text-lg text-zinc-800">
+                        Progress
+                    </h2>
                     <p className="text-sm text-zinc-500">
                         Answered {Object.keys(answers).length} / {questions.length}
                     </p>
@@ -121,13 +157,17 @@ const Quiz = () => {
                             <div
                                 key={i}
                                 className={`h-10 rounded-lg flex items-center justify-center text-sm font-semibold
-              ${answers[i] ? "bg-red-500 text-white" : "bg-zinc-100 text-zinc-400"}`}
+                ${answers[i]
+                                        ? "bg-red-500 text-white"
+                                        : "bg-zinc-100 text-zinc-400"
+                                    }`}
                             >
                                 {i + 1}
                             </div>
                         ))}
                     </div>
                 </div>
+
             </div>
         </div>
     )

@@ -17,7 +17,7 @@ import { MdOutlineFindInPage, MdOutlineQuiz } from "react-icons/md";
 import AnalyseResume from "./analyseResume";
 import { FaRegUser } from "react-icons/fa6";
 import { useLocation } from 'react-router-dom'
-import profile from "./profile";
+import { CgMenuGridR } from "react-icons/cg";
 import Profile from "./profile";
 
 const navItems = [
@@ -32,6 +32,7 @@ const navItems = [
 const AfterLoginLayout = () => {
 
   const [activeTab, setActiveTab] = useState("Overview");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const location = useLocation()
   const tab = location.state?.tab
 
@@ -50,8 +51,13 @@ const AfterLoginLayout = () => {
     await logoutUser();
   }
   return (
-    <div className="flex max-h-screen max-w-screen overflow-hidden">
-      <aside className="h-screen w-64 bg-zinc-900 text-zinc-100 flex flex-col">
+    <div className="relative flex h-screen w-screen overflow-hidden bg-white">
+      <aside
+        className={`fixed inset-y-0 left-0 z-50 w-64 bg-zinc-900 text-zinc-100 flex flex-col
+      transform transition-transform duration-300 ease-in-out
+      ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
+      md:static md:translate-x-0`}
+      >
         <div className="flex items-center gap-2 px-6 py-5 text-lg font-semibold">
           <div className="h-8 w-8 rounded-lg bg-red-500 flex items-center justify-center">
             <Zap className="h-5 w-5 text-white" />
@@ -59,16 +65,19 @@ const AfterLoginLayout = () => {
           Interview.io
         </div>
 
-        <div className="px-3">
+        <div className="px-3 flex-1 overflow-y-auto">
           {navItems.map(item => (
             <Button
               key={item.label}
               variant="ghost"
               className={`w-full justify-start gap-3 px-4 py-6 text-sm ${activeTab === item.label
-                ? "bg-red-500 text-white hover:bg-red-500"
-                : "text-zinc-400 hover:text-white hover:bg-zinc-800"
+                  ? "bg-red-500 text-white hover:bg-red-500"
+                  : "text-zinc-400 hover:text-white hover:bg-zinc-800"
                 }`}
-              onClick={() => setActiveTab(item.label)}
+              onClick={() => {
+                setActiveTab(item.label)
+                setIsSidebarOpen(false)
+              }}
             >
               <item.icon className="h-5 w-5" />
               {item.label}
@@ -76,7 +85,7 @@ const AfterLoginLayout = () => {
           ))}
         </div>
 
-        <div className="mt-auto px-4 pb-6">
+        <div className="px-4 pb-6">
           <Separator className="mb-4 bg-zinc-800" />
           <Button
             variant="ghost"
@@ -88,49 +97,76 @@ const AfterLoginLayout = () => {
           </Button>
         </div>
       </aside>
-      <main className="flex-1 overflow-y-auto">
-        {activeTab === "Mock Interview" && (
-          <div className="flex flex-col lg:flex-row w-full h-full overflow-hidden">
 
-            <div className="flex-1 p-2">
-              <AiInterviewForm />
-            </div>
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/60 md:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
 
-            <div className=" lg:w-[420px] p-2">
-              <InterviewCards />
-            </div>
+      <main className="flex-1 flex flex-col overflow-hidden">
+        <div className="fixed top-0 left-0 right-0 z-30 flex items-center gap-3
+        bg-white border-b border-zinc-800 px-4 py-3 md:hidden">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="text-white"
+            onClick={() => setIsSidebarOpen(true)}
+          >
+            <CgMenuGridR className="text-black size-6" />
+          </Button>
+          <span className="text-sm font-medium text-zinc-200 truncate">
+            {activeTab}
+          </span>
+        </div>
 
-          </div>
-        )}
-        {activeTab === "Ai Generated Quiz" && (
-          <div className="flex flex-col lg:flex-row w-full h-full">
-            <div className="flex-1 p-2">
-              <InterviewQuizForm />
+        <div className="flex-1 overflow-y-auto pt-14 md:pt-0">
+          {activeTab === "Mock Interview" && (
+            <div className="flex flex-col lg:flex-row w-full h-full">
+              <div className="flex-1 p-2">
+                <AiInterviewForm />
+              </div>
+              <div className="w-full lg:w-[420px] p-2">
+                <InterviewCards />
+              </div>
             </div>
-            <div className=" lg:w-[420px] p-2">
-              <QuizCards />
+          )}
+
+          {activeTab === "Ai Generated Quiz" && (
+            <div className="flex flex-col lg:flex-row w-full h-full">
+              <div className="flex-1 p-2">
+                <InterviewQuizForm />
+              </div>
+              <div className="w-full lg:w-[420px] p-2">
+                <QuizCards />
+              </div>
             </div>
-          </div>
-        )}
-        {activeTab === "Overview" && (
-          <div className="h-full overflow-hidden">
+          )}
+
+          {activeTab === "Overview" && (
             <div className="p-2 h-full">
               <OverviewDashboard />
             </div>
-          </div>
-        )}
+          )}
 
-        {activeTab === "Analyse Resume" && (
-          <div>
-            <AnalyseResume />
-          </div>
-        )}
-        {activeTab === 'Profile' &&
-          <Profile/>
-        }
+          {activeTab === "Analyse Resume" && (
+            <div className="p-2">
+              <AnalyseResume />
+            </div>
+          )}
+
+          {activeTab === "Profile" && (
+            <div className="p-2">
+              <Profile />
+            </div>
+          )}
+        </div>
       </main>
     </div>
   )
+
+
 }
 
 export default AfterLoginLayout

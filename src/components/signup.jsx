@@ -136,11 +136,11 @@ export default function Signup() {
               </div>
             </div>
 
-            <Button type="submit" className="w-full" disabled={isLoading}>
+            <Button type="submit" className="w-full cursor-pointer" disabled={isLoading}>
               {isLoading ? "Creating account..." : "Create account"}
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
-            <Button onClick={handleSignupWithGoogle} variant="outline" className="w-full">
+            <Button onClick={handleSignupWithGoogle} variant="outline" className="w-full cursor-pointer">
               <FcGoogle /> Sign up with Google
             </Button>
 
