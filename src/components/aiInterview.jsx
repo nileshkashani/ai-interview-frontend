@@ -169,7 +169,7 @@ export default function AiInterview() {
     const startInterview = async () => {
         const assistantOptions = {
             name: "AI Recruiter",
-            firstMessage: `Hi ${localStorage.getItem("user") || 'John Doe'}, how are you? Ready for your interview on ${interview.topic || 'for your selected topic'}?`,
+            firstMessage: `Hi ${localStorage.getItem("name") || 'John Doe'}, how are you? Ready for your interview on ${interview.topic || 'for your selected topic'}?`,
 
             transcriber: {
                 provider: "deepgram",
